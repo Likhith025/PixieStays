@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: 'http://localhost:3000', // Frontend URL
+    origin: ['http://localhost:3000', 'http://127.0.0.1:3000'], // Frontend URLs
     credentials: true
 }));
 
@@ -30,6 +30,7 @@ app.use('/api/content', contentRoutes);
 app.use('/api/upload', require('./routes/uploadRoutes'));
 app.use('/api/links', require('./routes/linkRoutes'));
 app.use('/api/coupons', require('./routes/couponRoutes'));
+app.use('/api/enquiries', require('./routes/enquiryRoutes'));
 
 // Database Connection
 mongoose.connect(process.env.Mongo_URL)
@@ -42,6 +43,8 @@ app.get('/', (req, res) => {
 });
 
 // Start Server
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on port ${PORT}`);
+    console.log(`- Local: http://localhost:${PORT}`);
+    console.log(`- Network: http://0.0.0.0:${PORT}`);
 });

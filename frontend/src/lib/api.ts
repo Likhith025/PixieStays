@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api';
+const isServer = typeof window === 'undefined';
+const API_URL = isServer ? 'http://localhost:5000/api' : '/api';
 
 const api = axios.create({
     baseURL: API_URL,
@@ -11,8 +12,9 @@ export const getContent = async () => {
     try {
         const response = await api.get('/content');
         return response.data;
-    } catch (error) {
-        console.error("Failed to fetch content", error);
+    } catch (error: any) {
+        console.error("Failed to fetch content:", error.message);
+        if (error.code) console.error("Error code:", error.code);
         return {};
     }
 };
@@ -21,8 +23,8 @@ export const getProperties = async () => {
     try {
         const response = await api.get('/properties');
         return response.data;
-    } catch (error) {
-        console.error("Failed to fetch properties", error);
+    } catch (error: any) {
+        console.error("Failed to fetch properties:", error.message);
         return [];
     }
 };
@@ -31,8 +33,8 @@ export const getProperty = async (id: string) => {
     try {
         const response = await api.get(`/properties/${id}`);
         return response.data;
-    } catch (error) {
-        console.error("Failed to fetch property", error);
+    } catch (error: any) {
+        console.error("Failed to fetch property:", error.message);
         return null;
     }
 };
@@ -138,4 +140,26 @@ export const verifyCoupon = async (code: string, orderAmount: number) => {
     } catch (error: any) {
         return { valid: false, message: error.response?.data?.message || 'Invalid coupon' };
     }
+};
+
+// --- ENQUIRY API ---
+export const createEnquiry = async (data: any) => {
+    return await api.post('/enquiries', data);
+};
+
+export const getEnquiries = async () => {
+    try {
+        const response = await api.get('/enquiries');
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+};
+
+export const updateEnquiry = async (id: string, data: any) => {
+    return await api.put(`/enquiries/${id}`, data);
+};
+
+export const deleteEnquiry = async (id: string) => {
+    return await api.delete(`/enquiries/${id}`);
 };

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { checkAuth, logoutAdmin } from '@/lib/api';
-import { FiHome, FiGrid, FiList, FiEdit, FiLogOut, FiTag } from 'react-icons/fi';
+import { FiHome, FiGrid, FiList, FiEdit, FiLogOut, FiTag, FiMessageSquare } from 'react-icons/fi';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -34,6 +34,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         { name: 'Dashboard', href: '/admin/dashboard', icon: FiHome },
         { name: 'Properties', href: '/admin/dashboard/properties', icon: FiGrid },
         { name: 'Bookings', href: '/admin/dashboard/bookings', icon: FiList },
+        { name: 'Enquiries', href: '/admin/dashboard/enquiries', icon: FiMessageSquare },
         { name: 'Site Content', href: '/admin/dashboard/content', icon: FiEdit },
         { name: 'Social Media', href: '/admin/dashboard/links', icon: FiGrid },
         { name: 'Smart Coupons', href: '/admin/dashboard/coupons', icon: FiTag },

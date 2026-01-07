@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { getLinks } from '@/lib/api';
+import { getLinks, getContent } from '@/lib/api';
 import { FiFacebook, FiInstagram, FiTwitter, FiLinkedin, FiYoutube, FiGlobe, FiLink } from 'react-icons/fi';
 
 const iconMap: any = {
@@ -17,13 +17,18 @@ const iconMap: any = {
 
 const Footer = () => {
     const [links, setLinks] = useState([]);
+    const [content, setContent] = useState<any>({});
 
     useEffect(() => {
-        const fetchLinks = async () => {
-            const data = await getLinks();
-            setLinks(data as any);
+        const fetchData = async () => {
+            const [linksData, contentData] = await Promise.all([
+                getLinks(),
+                getContent()
+            ]);
+            setLinks(linksData as any);
+            setContent(contentData);
         };
-        fetchLinks();
+        fetchData();
     }, []);
 
     return (
@@ -52,9 +57,9 @@ const Footer = () => {
                     <div>
                         <h3 className="text-sm font-semibold tracking-wider uppercase text-secondary">Contact</h3>
                         <ul className="mt-4 space-y-2 text-gray-400">
-                            <li>Andheri West, Mumbai</li>
-                            <li>+91 98765 43210</li>
-                            <li>hello@pixiestays.com</li>
+                            <li>{content.contact_address || 'Andheri West, Mumbai'}</li>
+                            <li>{content.contact_phone || '+91 98765 43210'}</li>
+                            <li>{content.contact_email || 'hello@pixiestays.com'}</li>
                         </ul>
                     </div>
 
